@@ -8,3 +8,8 @@ train_label = train_set['v1']
 
 test_data = test_set['v2']
 test_label = test_set['v1']
+
+#train_data_tensor = torch.tensor(train_data)
+
+#trainloader = torch.utils.data.DataLoader(
+    #torch.utils.data.TensorDataset(*(train_data,train_label)), batch_size=64, shuffle=True)
