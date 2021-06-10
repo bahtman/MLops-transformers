@@ -30,11 +30,12 @@ tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
 training_args = TrainingArguments("test_trainer")
 
-tokenized_train_data = tokenizer(train_data, return_tensors='tf')
+
+
+tokenized_train_data = tokenizer(train_data, batched=True)
 tokenized_test_data = tokenizer(test_data, return_tensors='tf')
 tokenized_train_label = tokenizer(train_label, return_tensors='tf')
 tokenized_test_label = tokenizer(test_label, return_tensors='tf')
-
 
 trainer = Trainer(
     model=model, args=training_args, train_dataset=tokenized_train_data, eval_dataset=tokenized_test_data
@@ -53,8 +54,8 @@ training_args = TrainingArguments("test_trainer", evaluation_strategy="epoch")
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=small_train_dataset,
-    eval_dataset=small_eval_dataset,
+    train_dataset=tokenized_train_data,
+    eval_dataset=tokenized_test_data,
     compute_metrics=compute_metrics,
 )
 trainer.evaluate()
