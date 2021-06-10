@@ -1,5 +1,7 @@
 import torch
 import pandas as pd
+from transformers import AutoTokenizer, AutoModel
+
 train_set = pd.read_pickle('../../data/processed/trainset.pkl')
 test_set = pd.read_pickle('../../data/processed/testset.pkl')
 
@@ -13,9 +15,6 @@ test_label = test_set['v1']
 
 #trainloader = torch.utils.data.DataLoader(
     #torch.utils.data.TensorDataset(*(train_data,train_label)), batch_size=64, shuffle=True)
-
-
-from transformers import AutoTokenizer, AutoModel
 
 tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 model = AutoModel.from_pretrained("bert-base-uncased")
