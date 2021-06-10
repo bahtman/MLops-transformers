@@ -1,61 +1,40 @@
 import torch
 import pandas as pd
-from transformers import AutoTokenizer, AutoModel
-from transformers import AutoModelForSequenceClassification
-from transformers import TrainingArguments
-from transformers import Trainer
-from transformers import TrainingArguments
-
+from model import MyAwesomeModel
 from torch import nn, optim
 import matplotlib.pyplot as plt
 import numpy as np
-from datasets import load_metric
+
+X_train = pd.read_pickle('../../data/processed/X_train.pkl')
+y_train = pd.read_pickle('../../data/processed/y_train.pkl')
 
 
-train_set = pd.read_pickle('../../data/processed/trainset.pkl')
-test_set = pd.read_pickle('../../data/processed/testset.pkl')
-
-train_data = train_set['v2']
-train_label = train_set['v1']
-
-test_data = test_set['v2']
-test_label = test_set['v1']
-
-#train_data_tensor = torch.tensor(train_data)
-
-#trainloader = torch.utils.data.DataLoader(
-    #torch.utils.data.TensorDataset(*(train_data,train_label)), batch_size=64, shuffle=True)
-
-tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
-training_args = TrainingArguments("test_trainer")
-
-
-
-tokenized_train_data = tokenizer(train_data.iloc[1], return_tensors='tf')
-tokenized_test_data = tokenizer(test_data.iloc[1], return_tensors='tf')
-tokenized_train_label = tokenizer(train_label.iloc[1], return_tensors='tf')
-tokenized_test_label = tokenizer(test_label.iloc[1], return_tensors='tf')
-
-trainer = Trainer(
-    model=model, args=training_args, train_dataset=tokenized_train_data, eval_dataset=tokenized_test_data
-)
-trainer.train()
-
-metric = load_metric("accuracy")
-
-def compute_metrics(eval_pred):
-    logits, labels = eval_pred
-    predictions = np.argmax(logits, axis=-1)
-    return metric.compute(predictions=predictions, references=labels)
-
-training_args = TrainingArguments("test_trainer", evaluation_strategy="epoch")
-
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=tokenized_train_data,
-    eval_dataset=tokenized_test_data,
-    compute_metrics=compute_metrics,
-)
-trainer.evaluate()
+loss_list = []
+print("Training day and night")
+model = MyAwesomeModel()
+criterion = nn.NLLLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.003)
+epochs = 5
+steps = 0
+model.train()
+for e in range(epochs):
+    running_loss = 0
+    for texts, labels in X_train, y_train:
+        optimizer.zero_grad()
+        output = model(texts)
+        loss = criterion(output, labels)
+        loss.backward()
+        optimizer.step()
+        running_loss += loss.item()
+    else:
+        loss_list.append(running_loss/len(trainloader))
+        print(f"Training loss: {running_loss/len(trainloader)}")
+plt.figure()
+epoch = np.arange(len(loss_list))
+print(len(loss_list))
+print(epoch)
+plt.plot(epoch, loss_list)
+plt.legend(['Training loss'])
+plt.xlabel('Epochs'), plt.ylabel('Loss')
+plt.show()
+torch.save(model, 'model.pth')
