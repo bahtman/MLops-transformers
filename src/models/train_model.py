@@ -32,10 +32,10 @@ training_args = TrainingArguments("test_trainer")
 
 
 
-tokenized_train_data = tokenizer(train_data, batched=True)
-tokenized_test_data = tokenizer(test_data, return_tensors='tf')
-tokenized_train_label = tokenizer(train_label, return_tensors='tf')
-tokenized_test_label = tokenizer(test_label, return_tensors='tf')
+tokenized_train_data = tokenizer(train_data.iloc[1], return_tensors='tf')
+tokenized_test_data = tokenizer(test_data.iloc[1], return_tensors='tf')
+tokenized_train_label = tokenizer(train_label.iloc[1], return_tensors='tf')
+tokenized_test_label = tokenizer(test_label.iloc[1], return_tensors='tf')
 
 trainer = Trainer(
     model=model, args=training_args, train_dataset=tokenized_train_data, eval_dataset=tokenized_test_data
