@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import pickle
-import os
 from torchvision import datasets, transforms
 from sklearn.model_selection import train_test_split
 
