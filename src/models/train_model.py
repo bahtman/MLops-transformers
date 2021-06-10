@@ -1,9 +1,14 @@
 import torch
 import pandas as pd
 from transformers import AutoTokenizer, AutoModel
+from transformers import AutoModelForSequenceClassification
+from transformers import TrainingArguments
+from transformers import Trainer
+
 from torch import nn, optim
 import matplotlib.pyplot as plt
 import numpy as np
+from datasets import load_metric
 
 
 train_set = pd.read_pickle('../../data/processed/trainset.pkl')
@@ -21,35 +26,23 @@ test_label = test_set['v1']
     #torch.utils.data.TensorDataset(*(train_data,train_label)), batch_size=64, shuffle=True)
 
 tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-model = AutoModel.from_pretrained("bert-base-uncased")
-criterion = nn.NLLLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.003)
-epochs = 5
-loss_list = []
-for e in range(epochs):
-    running_loss = 0
-    for i in range(len(train_data)):
-        optimizer.zero_grad()
-        text = train_data.iloc[i]
-        label = train_label.iloc[1]
-        inputs = tokenizer(text, return_tensors="pt")
-        outputs = model(**inputs)
-        labels = tokenizer(label, return_tensors="pt")
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-        running_loss += loss.item()
-    else:
-        loss_list.append(running_loss/len(train_data))
-        print(f"Training loss: {running_loss/len(train_data)}")
-plt.figure()
-epoch = np.arange(len(loss_list))
-print(len(loss_list))
-print(epoch)
-plt.plot(epoch, loss_list)
-plt.legend(['Training loss'])
-plt.xlabel('Epochs'), plt.ylabel('Loss')
-plt.show()
-plt.savefig('../../reports/figures/loss_curve')
-torch.save(model, '../../models/model.pth')
+model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
+training_args = TrainingArguments("test_trainer")
 
+tokenized_train_data = tokenizer(train_data, return_tensors='tf')
+tokenized_test_data = tokenizer(test_data, return_tensors='tf')
+tokenized_train_label = tokenizer(train_data, return_tensors='tf')
+tokenized_test_label = tokenizer(test_data, return_tensors='tf')
+
+
+trainer = Trainer(
+    model=model, args=training_args, train_dataset=tokenized_train_data, eval_dataset=tokenized_test_data
+)
+trainer.train()
+
+metric = load_metric("accuracy")
+
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
