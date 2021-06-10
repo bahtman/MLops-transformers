@@ -10,14 +10,6 @@ from nltk.tokenize import word_tokenize
 from sklearn.model_selection import train_test_split
 
 df = pd.read_csv("../../data/raw/spam.csv", encoding='latin-1')
-
-
-df.drop(["Unnamed: 2", "Unnamed: 3", "Unnamed: 4"], inplace=True, axis=1)
-
-#Adding new features
-df["num_words"] = df["v2"].apply(lambda s: len(re.findall(r'\w+', s))) # Count the number of words in the message
-df["message_len"] = df["v2"].apply(len) # get the length of the text message
-
 df["v1"].replace({"ham": 0, "spam":1}, inplace=True)
 
 df.rename({"v1": "is_spam", "v2": "message"},axis=1, inplace=True)
@@ -48,10 +40,8 @@ attention_mask = torch.tensor(attention_mask) # create a torch tensor for the at
 with torch.no_grad():
     encoder_hidden_state = model(input_ids, attention_mask=attention_mask)
 
-
 X = encoder_hidden_state[0][:,0,:].numpy()
 X = np.hstack((X, df[["num_words", "message_len"]].to_numpy().reshape(-1, 2))) # addind the the engineered features from the beginning
 y = df["is_spam"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=17)
-
