@@ -42,7 +42,6 @@ with torch.no_grad():
     encoder_hidden_state = model(input_ids, attention_mask=attention_mask)
 
 X = encoder_hidden_state[0][:,0,:].numpy()
-X = np.hstack((X, df[["num_words", "message_len"]].to_numpy().reshape(-1, 2))) # addind the the engineered features from the beginning
 y = df["is_spam"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=17)
