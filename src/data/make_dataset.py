@@ -5,6 +5,7 @@ import torch
 import transformers
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import pickle
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -46,7 +47,7 @@ y = df["is_spam"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=17)
 
-X_train.to_pickle('../../data/processed/X_train.pkl')
-X_test.to_pickle('../../data/processed/X_test.pkl')
-y_train.to_pickle('../../data/processed/y_train.pkl')
-y_test.to_pickle('../../data/processed/y_test.pkl')
+pickle.dump(X_train, open("../../data/processed/X_train.pkl", 'wb"'))
+pickle.dump(X_test, open("../../data/processed/X_test.pkl", 'wb"'))
+pickle.dump(y_train, open("../../data/processed/y_train.pkl", 'wb"'))
+pickle.dump(y_test, open("../../data/processed/y_test.pkl", 'wb"'))

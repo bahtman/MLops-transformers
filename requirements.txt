@@ -4,7 +4,7 @@ attrs==21.2.0
 certifi==2021.5.30
 chardet==4.0.0
 click==8.0.1
-colorama==0.4.4 ; platform_system == 'Windows'
+colorama==0.4.4 ; sys_platform == 'win32'
 configparser==5.0.2
 docker-pycreds==0.4.0
 filelock==3.0.12
@@ -17,6 +17,7 @@ iniconfig==1.1.1
 isort==5.8.0
 joblib==1.0.1
 mccabe==0.6.1
+nltk==3.6.2
 numpy==1.20.3
 packaging==20.9
 pandas==1.2.4
@@ -31,11 +32,11 @@ pyflakes==2.3.1
 pyparsing==2.4.7
 pytest==6.2.4
 python-dateutil==2.8.1
+pytz==2021.1
 pyyaml==5.4.1
 regex==2021.4.4
 requests==2.25.1
 sacremoses==0.0.45
-scikit-lean==0.24.2
 scipy==1.6.3
 sentry-sdk==1.1.0
 shortuuid==1.0.1
@@ -48,6 +49,6 @@ torch==1.8.1
 tqdm==4.61.0
 transformers==4.6.1
 typing-extensions==3.10.0.0
-urllib3==1.26.5
-wandb==0.10.31
+urllib3==1.25.11 ; sys_platform == 'win32' or sys_platform == 'cygwin'
+wandb==0.10.32
 yapf==0.31.0
