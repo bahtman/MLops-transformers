@@ -11,7 +11,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("../../data/raw/spam.csv", encoding='latin-1')
+df = pd.read_csv("./data/raw/spam.csv", encoding='latin-1')
 df["v1"].replace({"ham": 0, "spam":1}, inplace=True)
 
 df.rename({"v1": "is_spam", "v2": "message"},axis=1, inplace=True)
@@ -47,7 +47,7 @@ y = df["is_spam"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=17)
 
-pickle.dump(X_train, open("../../data/processed/X_train.pkl", 'wb"'))
-pickle.dump(X_test, open("../../data/processed/X_test.pkl", 'wb"'))
-pickle.dump(y_train, open("../../data/processed/y_train.pkl", 'wb"'))
-pickle.dump(y_test, open("../../data/processed/y_test.pkl", 'wb"'))
+pickle.dump(X_train, open("data/processed/X_train.pkl", 'wb'))
+pickle.dump(X_test, open("data/processed/X_test.pkl", 'wb'))
+pickle.dump(y_train, open("data/processed/y_train.pkl", 'wb'))
+pickle.dump(y_test, open("data/processed/y_test.pkl", 'wb'))
