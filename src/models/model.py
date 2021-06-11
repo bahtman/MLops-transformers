@@ -22,6 +22,6 @@ class MyAwesomeModel(nn.Module):
         x = self.dropout(F.relu(self.fc3(x)))
 
         # output so no dropout here
-        x = F.logsigmoid(self.fc4(x), dim=1)
+        x = F.sigmoid(self.fc4(x), dim=1)
 
         return x
