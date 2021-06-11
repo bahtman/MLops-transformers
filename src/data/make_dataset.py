@@ -50,4 +50,4 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_sta
 X_train.to_pickle('../../data/processed/X_train.pkl')
 X_test.to_pickle('../../data/processed/X_test.pkl')
 y_train.to_pickle('../../data/processed/y_train.pkl')
-y_test.to_pickle('../../data/processed/_test.pkl')
+y_test.to_pickle('../../data/processed/y_test.pkl')
