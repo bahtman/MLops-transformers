@@ -7,7 +7,7 @@ class MyAwesomeModel(nn.Module):
         self.fc1 = nn.Linear(10, 256)
         self.fc2 = nn.Linear(256, 128)
         self.fc3 = nn.Linear(128, 64)
-        self.fc4 = nn.Linear(64, 2)
+        self.fc4 = nn.Linear(64, 1)
 
         # Dropout module with 0.2 drop probability
         self.dropout = nn.Dropout(p=0.2)
@@ -22,6 +22,6 @@ class MyAwesomeModel(nn.Module):
         x = self.dropout(F.relu(self.fc3(x)))
 
         # output so no dropout here
-        x = F.log_softmax(self.fc4(x), dim=1)
+        x = F.logsigmoid(self.fc4(x), dim=1)
 
         return x
