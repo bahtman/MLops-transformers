@@ -32,12 +32,8 @@ for e in range(epochs):
     running_loss = 0
     for texts, labels in trainloader:
         optimizer.zero_grad()
-        if texts.shape != torch.Size([batch_size, 768]):
-            raise ValueError('Expected each sample to have shape [batch_size, 768] but had: ', texts.shape )
         output = model(texts)
         output = torch.squeeze(output, 1)
-        if output.shape[0] != 768:
-            raise ValueError('Expected each sample to have shape [768] but had: ', output.shape )
         loss = criterion(output.float(), labels.float())
         loss.backward()
         optimizer.step()
