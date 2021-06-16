@@ -2,11 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
-import torchvision
 import wandb
 from model import MyAwesomeModel
-from torch import nn, optim
-from torchvision import transforms
+from torch import optim
 
 wandb.init()
 
@@ -17,7 +15,7 @@ y_train = y_train.to_numpy()
 y_train = torch.tensor(y_train)
 
 trainloader = torch.utils.data.DataLoader(
-            torch.utils.data.TensorDataset(*(X_train,y_train)), batch_size=64, shuffle=True)
+            torch.utils.data.TensorDataset(*(X_train, y_train)), batch_size=64, shuffle=True)
 
 loss_list = []
 print("Training day and night")
@@ -43,7 +41,7 @@ for e in range(epochs):
     else:
         loss_list.append(running_loss/len(trainloader))
         print(f"Training loss: {running_loss/len(trainloader)}")
-    wandb.log({"texts" : [wandb.Image(i) for i in texts]})
+    wandb.log({"texts": [wandb.Image(i) for i in texts]})
 plt.figure()
 epoch = np.arange(len(loss_list))
 plt.plot(epoch, loss_list)

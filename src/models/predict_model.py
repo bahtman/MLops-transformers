@@ -12,12 +12,13 @@ X_test = torch.tensor(X_test)
 y_test = y_test.to_numpy()
 y_test = torch.tensor(y_test)
 testloader = torch.utils.data.DataLoader(
-            torch.utils.data.TensorDataset(*(X_test,y_test)), batch_size=64, shuffle=True)
+            torch.utils.data.TensorDataset(*(X_test, y_test)),
+            batch_size=64, shuffle=True)
 
 model.eval()
 with torch.no_grad():
     for images, labels in testloader:
-        #images, labels = next(iter(testloader))
+        # images, labels = next(iter(testloader))
         ps = torch.exp(model(images.float()))
         top_p, top_class = ps.topk(1, dim=1)
         equals = top_class == labels.view(*top_class.shape)
