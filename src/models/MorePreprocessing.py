@@ -11,7 +11,7 @@ tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
 
 
 train_encodings = tokenizer(X_train, truncation=True, padding=True)
-#val_encodings = tokenizer(val_texts, truncation=True, padding=True)
+# val_encodings = tokenizer(val_texts, truncation=True, padding=True)
 test_encodings = tokenizer([X_test, truncation=True, padding=True)
 
 import torch
