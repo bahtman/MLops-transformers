@@ -1,5 +1,5 @@
-from transformers import DistilBertTokenizerFast
 import pandas as pd
+from transformers import DistilBertTokenizerFast
 
 X_train = pd.read_pickle('../../data/processed/X_train.pkl')
 X_test = pd.read_pickle('../../data/processed/X_test.pkl')
@@ -15,6 +15,7 @@ train_encodings = tokenizer(X_train, truncation=True, padding=True)
 test_encodings = tokenizer([X_test, truncation=True, padding=True)
 
 import torch
+
 
 class SMSDataset(torch.utils.data.Dataset):
     def __init__(self, encodings, labels):

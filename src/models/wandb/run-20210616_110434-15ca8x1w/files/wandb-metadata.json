@@ -1,0 +1,22 @@
+{
+    "os": "macOS-10.15.5-x86_64-i386-64bit",
+    "python": "3.9.4",
+    "heartbeatAt": "2021-06-16T09:04:54.803441",
+    "startedAt": "2021-06-16T09:04:34.647763",
+    "docker": null,
+    "cpu_count": 4,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/Project/MLops-transformers/src/models/train_model.py",
+    "codePath": "src/models/train_model.py",
+    "git": {
+        "remote": "https://github.com/bahtman/MLops-transformers.git",
+        "commit": "bd4c0c2106fd11f75b62c43fb46ca4474e19b18b"
+    },
+    "email": "f.kjaer@icloud.com",
+    "root": "/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/Project/MLops-transformers",
+    "host": "frederiks-macbook-pro-47.home",
+    "username": "frederikkjaer",
+    "executable": "/Users/frederikkjaer/opt/miniconda3/envs/MLOps_Day_2/bin/python"
+}

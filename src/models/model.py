@@ -1,6 +1,7 @@
-from torch import nn, optim
 import torch
 import torch.nn.functional as F
+from torch import nn, optim
+
 
 class MyAwesomeModel(nn.Module):
     def __init__(self):
