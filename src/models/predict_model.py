@@ -22,8 +22,6 @@ with torch.no_grad():
         equals = top_class == labels.view(*top_class.shape)
         accuracy = torch.mean(equals.type(torch.FloatTensor))
         accuracy_list.append(accuracy.item()*100)
-    else:
-        print(f'Accuracy: {accuracy.item()*100}%')
 epoch = np.arange(len(accuracy_list))
 print("mean of accuracy = ", np.mean(accuracy_list))
 plt.figure()

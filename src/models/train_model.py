@@ -23,7 +23,7 @@ print("Training day and night")
 model = MyAwesomeModel()
 wandb.watch(model, log_freq=100)
 
-criterion = nn.L1Loss()
+criterion = torch.nn.BCELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
 epochs = 20
 steps = 0
@@ -34,11 +34,10 @@ for e in range(epochs):
         optimizer.zero_grad()
         output = model(texts)
         output = torch.squeeze(output,1)
-        loss = criterion(output, labels)
+        loss = criterion(output.float(), labels.float())
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
-        grid = torchvision.utils.make_grid(texts)
         wandb.log({"loss": loss})
     else:
         loss_list.append(running_loss/len(trainloader))

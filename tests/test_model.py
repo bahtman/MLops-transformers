@@ -1,20 +1,29 @@
 import sys
 import torch
 import pytest
-sys.path.insert(1,'/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/02_code_organisation/CoockieCutter/MyNetworkDay1/src/models')
+import pandas as pd
+sys.path.insert(1,'/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/Project/MLops-transformers/src/models')
 from model import MyAwesomeModel
 model = MyAwesomeModel()
 batch_size = 64
 
-train_data, train_label = torch.load('/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/02_code_organisation/CoockieCutter/MyNetworkDay1/data/processed/training.pt')
-train_data_unsqueezed = torch.unsqueeze(train_data,1)
-trainloader = torch.utils.data.DataLoader(
-    torch.utils.data.TensorDataset(*(train_data_unsqueezed,train_label)), batch_size=batch_size, shuffle=True)
+X_train = pd.read_pickle('../../data/processed/X_train.pkl')
+y_train = pd.read_pickle('../../data/processed/y_train.pkl')
+X_train = torch.tensor(X_train)
+y_train = y_train.to_numpy()
+y_train = torch.tensor(y_train)
 
-test_data, test_label = torch.load('/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/02_code_organisation/CoockieCutter/MyNetworkDay1/data/processed/test.pt')
-test_data_unsqueezed = torch.unsqueeze(test_data,1)
+trainloader = torch.utils.data.DataLoader(
+            torch.utils.data.TensorDataset(*(X_train,y_train)), batch_size=batch_size, shuffle=True)
+
+X_test = pd.read_pickle('../../data/processed/X_test.pkl')
+y_test = pd.read_pickle('../../data/processed/y_test.pkl')
+X_test = torch.tensor(X_test)
+y_test = y_test.to_numpy()
+y_test = torch.tensor(y_test)
 testloader = torch.utils.data.DataLoader(
-    torch.utils.data.TensorDataset(*(test_data_unsqueezed,test_label)), batch_size=batch_size, shuffle=True)
+            torch.utils.data.TensorDataset(*(X_test,y_test)), batch_size=batch_size, shuffle=True)
+
 def test_model(trainloader = trainloader):
     for images, labels in trainloader:
         assert images.shape == torch.Size([batch_size,1,28,28])
