@@ -47,5 +47,5 @@ def test_raises_warnings():
         test1 = torch.randn(768)
         output = model(test1)
     with pytest.raises(ValueError):
-        test1 = torch.randn(batch_size, 64)
-        output = model(test1)
+        test2 = torch.randn(batch_size, 64)
+        output = model(test2)
