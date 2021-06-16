@@ -15,7 +15,8 @@ y_train = y_train.to_numpy()
 y_train = torch.tensor(y_train)
 
 trainloader = torch.utils.data.DataLoader(
-            torch.utils.data.TensorDataset(*(X_train, y_train)), batch_size=64, shuffle=True)
+            torch.utils.data.TensorDataset(*(X_train, y_train)),
+            batch_size=64, shuffle=True)
 
 loss_list = []
 print("Training day and night")
@@ -32,7 +33,7 @@ for e in range(epochs):
     for texts, labels in trainloader:
         optimizer.zero_grad()
         output = model(texts)
-        output = torch.squeeze(output,1)
+        output = torch.squeeze(output, 1)
         loss = criterion(output.float(), labels.float())
         loss.backward()
         optimizer.step()
