@@ -29,7 +29,7 @@ for e in range(epochs):
     for texts, labels in trainloader:
         optimizer.zero_grad()
         output = model(texts)
-        print("output shape",output.shape)
+        output = torch.squeeze(output,1)
         loss = criterion(output, labels)
         loss.backward()
         optimizer.step()
