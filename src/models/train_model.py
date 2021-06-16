@@ -7,7 +7,7 @@ from model import MyAwesomeModel
 from torch import optim
 
 wandb.init()
-
+batch_size = 64
 X_train = pd.read_pickle('../../data/processed/X_train.pkl')
 y_train = pd.read_pickle('../../data/processed/y_train.pkl')
 X_train = torch.tensor(X_train)
@@ -16,7 +16,7 @@ y_train = torch.tensor(y_train)
 
 trainloader = torch.utils.data.DataLoader(
             torch.utils.data.TensorDataset(*(X_train, y_train)),
-            batch_size=64, shuffle=True)
+            batch_size=batch_size, shuffle=True)
 
 loss_list = []
 print("Training day and night")
@@ -32,8 +32,12 @@ for e in range(epochs):
     running_loss = 0
     for texts, labels in trainloader:
         optimizer.zero_grad()
+        if texts.shape != torch.Size([batch_size, 768]):
+            raise ValueError('Expected each sample to have shape [batch_size, 768] but had: ', texts.shape )
         output = model(texts)
         output = torch.squeeze(output, 1)
+        if output.shape[0] != 768:
+            raise ValueError('Expected each sample to have shape [768] but had: ', output.shape )
         loss = criterion(output.float(), labels.float())
         loss.backward()
         optimizer.step()
