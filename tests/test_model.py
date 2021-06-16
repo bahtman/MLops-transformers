@@ -1,9 +1,12 @@
 import sys
-import torch
-import pytest
+
 import pandas as pd
-sys.path.insert(1,'/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/Project/MLops-transformers/src/models')
+import pytest
+import torch
 from model import MyAwesomeModel
+
+sys.path.insert(1, 
+    '/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/Project/MLops-transformers/src/models')
 model = MyAwesomeModel()
 batch_size = 64
 

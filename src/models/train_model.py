@@ -1,12 +1,13 @@
-import torch
-import pandas as pd
-from model import MyAwesomeModel
-from torch import nn, optim
 import matplotlib.pyplot as plt
 import numpy as np
-from torchvision import transforms
-import wandb
+import pandas as pd
+import torch
 import torchvision
+import wandb
+from model import MyAwesomeModel
+from torch import nn, optim
+from torchvision import transforms
+
 wandb.init()
 
 X_train = pd.read_pickle('../../data/processed/X_train.pkl')

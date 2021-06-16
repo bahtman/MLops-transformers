@@ -1,7 +1,8 @@
-import torch
 import numpy as np
-import pytest
 import pandas as pd
+import pytest
+import torch
+
 #train_data, train_label = torch.load('/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/Project/MLops-transformers/data/processed/training.pt')
 #trainset = torch.utils.data.TensorDataset(*trainset)
 #test_data, test_label = torch.load('/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/Project/MLops-transformers/data/processed/test.pt')

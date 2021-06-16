@@ -1,7 +1,8 @@
-import torch
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+import torch
+
 accuracy_list = []
 model = torch.load('../../models/model.pth')
 
