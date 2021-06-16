@@ -1,10 +1,11 @@
 from torch import nn, optim
+import torch
 import torch.nn.functional as F
 
 class MyAwesomeModel(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1 = nn.Linear(10, 256)
+        self.fc1 = nn.Linear(768, 256)
         self.fc2 = nn.Linear(256, 128)
         self.fc3 = nn.Linear(128, 64)
         self.fc4 = nn.Linear(64, 1)
@@ -22,6 +23,6 @@ class MyAwesomeModel(nn.Module):
         x = self.dropout(F.relu(self.fc3(x)))
 
         # output so no dropout here
-        x = F.sigmoid(self.fc4(x), dim=1)
+        x = torch.sigmoid(self.fc4(x))
 
         return x
