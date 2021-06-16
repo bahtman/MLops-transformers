@@ -5,7 +5,9 @@ from torch import nn, optim
 import matplotlib.pyplot as plt
 import numpy as np
 from torchvision import transforms
-
+import wandb
+import torchvision
+wandb.init()
 
 X_train = pd.read_pickle('../../data/processed/X_train.pkl')
 y_train = pd.read_pickle('../../data/processed/y_train.pkl')
@@ -19,6 +21,8 @@ trainloader = torch.utils.data.DataLoader(
 loss_list = []
 print("Training day and night")
 model = MyAwesomeModel()
+wandb.watch(model, log_freq=100)
+
 criterion = nn.L1Loss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
 epochs = 20
@@ -34,9 +38,12 @@ for e in range(epochs):
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
+        grid = torchvision.utils.make_grid(texts)
+        wandb.log({"loss": loss})
     else:
         loss_list.append(running_loss/len(trainloader))
         print(f"Training loss: {running_loss/len(trainloader)}")
+    wandb.log({"texts" : [wandb.Image(i) for i in texts]})
 plt.figure()
 epoch = np.arange(len(loss_list))
 plt.plot(epoch, loss_list)
