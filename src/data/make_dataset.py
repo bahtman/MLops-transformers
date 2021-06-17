@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("../../data/raw/spam.csv", encoding='latin-1')
+df = pd.read_csv("data/raw/spam.csv", encoding='latin-1')
 df["v1"].replace({"ham": 0, "spam": 1}, inplace=True)
 
 df.rename({"v1": "is_spam", "v2": "message"}, axis=1, inplace=True)
