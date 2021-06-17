@@ -68,12 +68,14 @@ for e in range(epochs):
             val_loss_list.append(running_loss_val/len(valloader))
     if (running_loss_val / len(valloader)) < lowest_val_loss:
         torch.save(model, '../../models/model.pth')
-        lowest_val_loss = running_loss_val/len(valloader)       
+        lowest_val_loss = running_loss_val/len(valloader)
+    else:
+        continue      
     #wandb.log({"texts": [wandb.Image(i) for i in texts]})
 plt.figure()
 epoch = np.arange(len(loss_list))
 plt.plot(epoch, loss_list)
-plt.plot(epoch, )
+plt.plot(epoch, val_loss_list)
 plt.legend(['Training loss and validation loss'])
 plt.xlabel('Epochs'), plt.ylabel('Loss')
 plt.show()
