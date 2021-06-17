@@ -29,6 +29,9 @@ res = []
 
 print("Training day and night")
 model = MyAwesomeModel()
+model = model.to(device)
+model = torch.nn.DataParallel(model, device_ids = [0])
+
 #wandb.watch(model, log_freq=500)
 
 criterion = torch.nn.BCELoss()
