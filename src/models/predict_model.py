@@ -4,10 +4,10 @@ import pandas as pd
 import torch
 
 accuracy_list = []
-model = torch.load('../../models/model.pth')
+model = torch.load('models/model.pth')
 
-X_test = pd.read_pickle('../../data/processed/X_test.pkl')
-y_test = pd.read_pickle('../../data/processed/y_test.pkl')
+X_test = pd.read_pickle('data/processed/X_test.pkl')
+y_test = pd.read_pickle('data/processed/y_test.pkl')
 X_test = torch.tensor(X_test)
 y_test = y_test.to_numpy()
 y_test = torch.tensor(y_test)
