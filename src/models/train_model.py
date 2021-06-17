@@ -5,6 +5,7 @@ import torch
 import wandb
 from model import MyAwesomeModel
 from torch import optim
+import numpy as np
 
 #wandb.init()
 batch_size = 128
@@ -27,7 +28,7 @@ model = MyAwesomeModel()
 
 criterion = torch.nn.BCELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
-epochs = 1000
+epochs = 40
 steps = 0
 model.train()
 lowest_val_loss = np.inf
@@ -45,7 +46,7 @@ for e in range(epochs):
     else:
         loss_list.append(running_loss/len(trainloader))
         if e % 10 == 0:
-            print("at epoch: ",e,f"the Training loss is : {running_loss/len(trainloader)}")
+            print("at epoch: ",e,f"the Training loss is : {running_loss/len(trainloader)}") 
     with torch.no_grad():
         running_loss_val = 0
         model.eval()
@@ -60,13 +61,14 @@ for e in range(epochs):
     if running_loss_val / len(valloader) < lowest_val_loss:
         torch.save(model, 'models/model.pth')
         lowest_val_loss = running_loss_val/len(valloader)
-            
+    else:
+        continue      
     #wandb.log({"texts": [wandb.Image(i) for i in texts]})
 plt.figure()
 epoch = np.arange(len(loss_list))
 plt.plot(epoch, loss_list)
-plt.plot(epoch, )
-plt.legend(['Training loss'])
+plt.plot(epoch, val_loss_list)
+plt.legend(['Training loss and validation loss'])
 plt.xlabel('Epochs'), plt.ylabel('Loss')
 plt.show()
 
