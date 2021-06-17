@@ -61,7 +61,7 @@ for e in range(epochs):
             if e % 20 == 0:
                 print("at epoch: ",e,f"the Validation loss is : {running_loss_val/len(valloader)}") 
     if (running_loss_val / len(valloader)) < lowest_val_loss:
-        torch.save(model, '../../models/model.pth')
+        torch.save(model, 'models/model.pth')
         lowest_val_loss = running_loss_val/len(valloader)
     else:
         continue      
