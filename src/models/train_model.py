@@ -30,7 +30,7 @@ res = []
 print("Training day and night")
 model = MyAwesomeModel()
 model = model.to(device)
-model = torch.nn.DataParallel(model, device_ids = [0])
+model = torch.nn.DataParallel(model, device_ids = [0,1,2,4])
 
 #wandb.watch(model, log_freq=500)
 
