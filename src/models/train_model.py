@@ -11,6 +11,7 @@ import numpy as np
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #wandb.init()
+num_workers = 2
 batch_size = 128
 X_train = torch.tensor(pd.read_pickle('data/processed/X_train.pkl'))
 y_train = torch.tensor(pd.read_pickle('data/processed/y_train.pkl').to_numpy())
@@ -19,10 +20,10 @@ y_val = torch.tensor(pd.read_pickle('data/processed/y_val.pkl').to_numpy())
 
 trainloader = torch.utils.data.DataLoader(
             torch.utils.data.TensorDataset(*(X_train, y_train)),
-            batch_size=batch_size, shuffle=True)
+            batch_size=batch_size, shuffle=True, num_workers=num_workers)
 valloader = torch.utils.data.DataLoader(
             torch.utils.data.TensorDataset(*(X_val, y_val)),
-            batch_size=batch_size, shuffle=False)
+            batch_size=batch_size, shuffle=False, num_workers=num_workers)
 loss_list = []
 val_loss_list = []
 res = []
@@ -30,7 +31,7 @@ res = []
 print("Training day and night")
 model = MyAwesomeModel()
 model = model.to(device)
-model = torch.nn.DataParallel(model, device_ids = [0,1,2,4])
+model = torch.nn.DataParallel(model, device_ids = [0, 1])
 
 #wandb.watch(model, log_freq=500)
 
