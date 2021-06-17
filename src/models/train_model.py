@@ -28,7 +28,7 @@ model = MyAwesomeModel()
 
 criterion = torch.nn.BCELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
-epochs = 40
+epochs = 100
 steps = 0
 model.train()
 lowest_val_loss = np.inf
@@ -45,7 +45,7 @@ for e in range(epochs):
         #wandb.log({"train_loss": loss})
     else:
         loss_list.append(running_loss/len(trainloader))
-        if e % 10 == 0:
+        if e % 20 == 0:
             print("at epoch: ",e,f"the Training loss is : {running_loss/len(trainloader)}") 
     with torch.no_grad():
         running_loss_val = 0
@@ -58,8 +58,10 @@ for e in range(epochs):
             #wandb.log({"val_loss": loss_val})
         else:
             val_loss_list.append(running_loss_val/len(valloader))
-    if running_loss_val / len(valloader) < lowest_val_loss:
-        torch.save(model, 'models/model.pth')
+            if e % 20 == 0:
+                print("at epoch: ",e,f"the Validation loss is : {running_loss_val/len(valloader)}") 
+    if (running_loss_val / len(valloader)) < lowest_val_loss:
+        torch.save(model, '../../models/model.pth')
         lowest_val_loss = running_loss_val/len(valloader)
     else:
         continue      
