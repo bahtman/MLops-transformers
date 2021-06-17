@@ -8,16 +8,17 @@ from torch import optim
 
 #wandb.init()
 batch_size = 128
-X_train = pd.read_pickle('../../data/processed/X_train.pkl')
-y_train = pd.read_pickle('../../data/processed/y_train.pkl')
-X_train = torch.tensor(X_train)
-y_train = y_train.to_numpy()
-y_train = torch.tensor(y_train)
+X_train = torch.tensor(pd.read_pickle('data/processed/X_train.pkl'))
+y_train = torch.tensor(pd.read_pickle('data/processed/y_train.pkl').to_numpy())
+X_val = torch.tensor(pd.read_pickle('data/processed/X_val.pkl'))
+y_val = torch.tensor(pd.read_pickle('data/processed/y_val.pkl').to_numpy())
 
 trainloader = torch.utils.data.DataLoader(
             torch.utils.data.TensorDataset(*(X_train, y_train)),
             batch_size=batch_size, shuffle=True)
-valloader = 
+valloader = torch.utils.data.DataLoader(
+            torch.utils.data.TensorDataset(*(X_val, y_val)),
+            batch_size=batch_size, shuffle=False)
 loss_list = []
 val_loss_list = []
 print("Training day and night")
@@ -50,13 +51,14 @@ for e in range(epochs):
         model.eval()
         for texts, labels in valloader:
             output = model(texts)
+            output = torch.squeeze(output,1)
             loss_val = criterion(output.float(), labels.float())
             running_loss_val += loss_val.item()
             #wandb.log({"val_loss": loss_val})
         else:
             val_loss_list.append(running_loss_val/len(valloader))
     if running_loss_val / len(valloader) < lowest_val_loss:
-        torch.save(model, '../../models/model.pth')
+        torch.save(model, 'models/model.pth')
         lowest_val_loss = running_loss_val/len(valloader)
             
     #wandb.log({"texts": [wandb.Image(i) for i in texts]})
