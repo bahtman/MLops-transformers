@@ -23,7 +23,6 @@ with torch.no_grad():
         ps = torch.exp(model(images.float()))
         #print("ps = ", ps)
         top_p, top_class = ps.topk(1, dim=1)
-        print(len(top_class))
         #print("top_p = ", top_p, "and top class = ", top_class)
         equals = top_class == labels.view(*top_class.shape)
         for i in range(len(top_class)):
