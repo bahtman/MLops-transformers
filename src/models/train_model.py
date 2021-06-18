@@ -12,7 +12,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #wandb.init()
 #num_workers = 2
-batch_size = 128
+batch_size = 64
 X_train = torch.tensor(pd.read_pickle('data/processed/X_train.pkl'))
 y_train = torch.tensor(pd.read_pickle('data/processed/y_train.pkl').to_numpy())
 X_val = torch.tensor(pd.read_pickle('data/processed/X_val.pkl'))
@@ -35,10 +35,10 @@ model = torch.nn.DataParallel(model, device_ids = [0])
 
 #wandb.watch(model, log_freq=500)
 
-criterion = torch.nn.BCEWithLogitsLoss(pos_weight = torch.FloatTensor([(4827/747)]))
+criterion = torch.nn.BCELoss(reduction='none')
 #criterion = torch.nn.NLLLoss(torch.tensor([0.8]))
 optimizer = optim.Adam(model.parameters(), lr=0.003)
-epochs = 200
+epochs = 100
 steps = 0
 model.train()
 lowest_val_loss = np.inf
@@ -51,6 +51,8 @@ for e in range(epochs):
         output = model(texts)
         output = torch.squeeze(output, 1)
         loss = criterion(output.float(), labels.float())
+        w = (0.14*(1-labels)+0.86*labels).detach()
+        loss = (w*loss).mean()
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
@@ -67,6 +69,8 @@ for e in range(epochs):
             output = model(texts)
             output = torch.squeeze(output,1)
             loss_val = criterion(output.float(), labels.float())
+            w_val = (0.86*(1-labels)+0.14*labels).detach()
+            loss_val = (w_val*loss_val).mean()
             running_loss_val += loss_val.item()
             #wandb.log({"val_loss": loss_val})
         else:
@@ -90,4 +94,3 @@ plt.plot(epoch, val_loss_list)
 plt.legend(['Training loss and validation loss'])
 plt.xlabel('Epochs'), plt.ylabel('Loss')
 plt.show()
-
