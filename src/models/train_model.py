@@ -69,7 +69,7 @@ for e in range(epochs):
             output = model(texts)
             output = torch.squeeze(output,1)
             loss_val = criterion(output.float(), labels.float())
-            w_val = (0.86*(1-labels)+0.14*labels).detach()
+            w_val = (0.14*(1-labels)+0.86*labels).detach()
             loss_val = (w_val*loss_val).mean()
             running_loss_val += loss_val.item()
             #wandb.log({"val_loss": loss_val})
