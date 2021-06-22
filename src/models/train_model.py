@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import os
 import torch
 #import wandb
 import time
@@ -12,7 +13,7 @@ from omegaconf import DictConfig, OmegaConf
 import logging
 
 log = logging.getLogger(__name__)
-@hydra.main(config_path="config", config_name='config.yaml')
+@hydra.main(config_path="../../config", config_name='config.yaml')
 def train_model(config: DictConfig) -> None:
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment
@@ -24,6 +25,8 @@ def train_model(config: DictConfig) -> None:
     #wandb.init()
     #num_workers = 2
     batch_size = hparams['batch_size']
+    cwd = os.getcwd()
+    print(cwd)
     X_train = torch.tensor(pd.read_pickle(hparams['train_x_path']))
     y_train = torch.tensor(pd.read_pickle(hparams['train_y_path']).to_numpy())
     X_val = torch.tensor(pd.read_pickle(hparams['val_x_path']))
@@ -85,11 +88,11 @@ def train_model(config: DictConfig) -> None:
                 running_loss_val += loss_val.item()
                 #wandb.log({"val_loss": loss_val})
             else:
-                loss_list.append(running_loss/len(trainloader))
+                val_loss_list.append(running_loss_val/len(trainloader))
                 if e % 20 == 0:
                     print("at epoch: ",e,f"the Validation loss is : {running_loss_val/len(valloader)}") 
         if (running_loss_val / len(valloader)) < lowest_val_loss:
-            torch.save(model, 'models/model.pth')
+            torch.save(model, hparams['model_path'])
             lowest_val_loss = running_loss_val/len(valloader)
         else:
             continue      
@@ -105,3 +108,5 @@ def train_model(config: DictConfig) -> None:
     plt.legend(['Training loss and validation loss'])
     plt.xlabel('Epochs'), plt.ylabel('Loss')
     plt.show()
+if __name__ == "__main__":
+    train_model()

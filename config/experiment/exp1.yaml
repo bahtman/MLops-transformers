@@ -1,9 +1,9 @@
 # @package _group_
-train_x_path: 'data/processed/X_train.pkl'
-train_y_path: 'data/processed/y_train.pkl'
-val_x_path: 'data/processed/X_train.pkl'
-val_y_path: 'data/processed/y_train.pkl'
-model_path: 'models/model.pth'
+train_x_path: '../../../data/processed/X_train.pkl'
+train_y_path: '../../../data/processed/y_train.pkl'
+val_x_path: '../../../data/processed/X_train.pkl'
+val_y_path: '../../../data/processed/y_train.pkl'
+model_path: '../../../models/model.pth'
 weight_1: 0.14
 weight_2: 0.86
 cuda: False
