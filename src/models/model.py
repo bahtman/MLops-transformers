@@ -7,11 +7,13 @@ class MyAwesomeModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.fc1 = nn.Linear(768, 256)
-        self.fc3 = nn.Linear(256, 64)
+        self.fc2 = nn.Linear(256, 128)
+        self.fc3 = nn.Linear(128, 64)
         self.fc4 = nn.Linear(64, 1)
 
         # Dropout module with 0.2 drop probability
-        self.dropout = nn.Dropout(p=0.2)
+        self.dropout_input = nn.Dropout(p=0.2)
+        self.dropout_hidden = nn.Dropout(p = 0.5)
 
     def forward(self, x):
         if x.ndim != 2:
@@ -22,8 +24,9 @@ class MyAwesomeModel(nn.Module):
         x = x.view(x.shape[0], -1)
 
         # Now with dropout
-        x = self.dropout(F.relu(self.fc1(x)))
-        x = self.dropout(F.relu(self.fc3(x)))
+        x = self.dropout_input(F.relu(self.fc1(x)))
+        x = self.dropout_hidden(F.relu(self.fc2(x)))
+        x = self.dropout_hidden(F.relu(self.fc3(x)))
 
         # output so no dropout here
         x = torch.sigmoid(self.fc4(x))
