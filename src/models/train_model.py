@@ -21,12 +21,9 @@ def train_model(config: DictConfig) -> None:
     log.info(f'hparameters:  {hparams}')
     device = torch.device("cuda" if hparams['cuda'] else "cpu")
     #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
     #wandb.init()
     #num_workers = 2
     batch_size = hparams['batch_size']
-    cwd = os.getcwd()
-    print(cwd)
     X_train = torch.tensor(pd.read_pickle(hparams['train_x_path']))
     y_train = torch.tensor(pd.read_pickle(hparams['train_y_path']).to_numpy())
     X_val = torch.tensor(pd.read_pickle(hparams['val_x_path']))
@@ -42,7 +39,7 @@ def train_model(config: DictConfig) -> None:
     val_loss_list = []
     res = []
 
-    print("Training day and night")
+    log.info("Training day and night")
     model = MyAwesomeModel(hparams)
     model = model.to(device)
     model = torch.nn.DataParallel(model, device_ids = [0])
@@ -73,7 +70,7 @@ def train_model(config: DictConfig) -> None:
         else:
             loss_list.append(running_loss/len(trainloader))
             if e % 20 == 0:
-                print("at epoch: ",e,f"the Training loss is : {running_loss/len(trainloader)}") 
+                log.info(f"at epoch: {e} the Training loss is : {running_loss/len(trainloader)}") 
         with torch.no_grad():
             running_loss_val = 0
             model.eval()
@@ -90,7 +87,7 @@ def train_model(config: DictConfig) -> None:
             else:
                 val_loss_list.append(running_loss_val/len(trainloader))
                 if e % 20 == 0:
-                    print("at epoch: ",e,f"the Validation loss is : {running_loss_val/len(valloader)}") 
+                    log.info(f"at epoch: {e} the Validation loss is : {running_loss_val/len(valloader)}") 
         if (running_loss_val / len(valloader)) < lowest_val_loss:
             torch.save(model, hparams['model_path'])
             lowest_val_loss = running_loss_val/len(valloader)
@@ -100,7 +97,7 @@ def train_model(config: DictConfig) -> None:
         end = time.time()
         res.append(end - start)
     res = np.array(res)
-    print('Timing:', np.mean(res),'+-',np.std(res))
+    log.info(f'Timing: {np.mean(res)} +- {np.std(res)}')
     plt.figure()
     epoch = np.arange(len(loss_list))
     plt.plot(epoch, loss_list)
