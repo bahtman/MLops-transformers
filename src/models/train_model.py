@@ -45,8 +45,7 @@ def train_model(config: DictConfig) -> None:
     model = torch.nn.DataParallel(model, device_ids = [0])
 
     #wandb.watch(model, log_freq=500)
-
-    criterion = torch.nn.BCEWithLogitsLoss(pos_weight = torch.FloatTensor([(4827/747)]))
+    criterion = torch.nn.BCELoss(reduction='none')
     #criterion = torch.nn.NLLLoss(torch.tensor([0.8]))
     optimizer = optim.Adam(model.parameters(), lr=hparams['lr'])
     epochs = hparams['epochs']
@@ -62,6 +61,8 @@ def train_model(config: DictConfig) -> None:
             output = model(texts)
             output = torch.squeeze(output, 1)
             loss = criterion(output.float(), labels.float())
+            w = (hparams['weight_1']*(1-labels)+hparams['weight_2']*labels).detach()
+            loss = (w*loss).mean()
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
@@ -75,17 +76,20 @@ def train_model(config: DictConfig) -> None:
             model.eval()
             for texts, labels in valloader:
                 texts, labels = texts.to(device), labels.to(device)
+                optimizer.zero_grad()
                 output = model(texts)
                 output = torch.squeeze(output,1)
                 loss_val = criterion(output.float(), labels.float())
+                w_val = (0.14*(1-labels)+0.86*labels).detach()
+                loss_val = (w_val*loss_val).mean()
                 running_loss_val += loss_val.item()
                 #wandb.log({"val_loss": loss_val})
             else:
-                val_loss_list.append(running_loss_val/len(valloader))
+                loss_list.append(running_loss/len(trainloader))
                 if e % 20 == 0:
                     print("at epoch: ",e,f"the Validation loss is : {running_loss_val/len(valloader)}") 
         if (running_loss_val / len(valloader)) < lowest_val_loss:
-            torch.save(model, hparams['model_path'])
+            torch.save(model, 'models/model.pth')
             lowest_val_loss = running_loss_val/len(valloader)
         else:
             continue      
@@ -101,5 +105,3 @@ def train_model(config: DictConfig) -> None:
     plt.legend(['Training loss and validation loss'])
     plt.xlabel('Epochs'), plt.ylabel('Loss')
     plt.show()
-if __name__ == "__main__":
-    train_model()
