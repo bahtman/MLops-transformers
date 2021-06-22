@@ -4,16 +4,16 @@ from torch import nn
 
 
 class MyAwesomeModel(nn.Module):
-    def __init__(self):
+    def __init__(self, hparams):
         super().__init__()
-        self.fc1 = nn.Linear(768, 256)
-        self.fc2 = nn.Linear(256, 128)
-        self.fc3 = nn.Linear(128, 64)
-        self.fc4 = nn.Linear(64, 1)
+        self.fc1 = nn.Linear(768, hparams['hidden_dim_1'])
+        self.fc2 = nn.Linear(hparams['hidden_dim_1'], hparams['hidden_dim_2'])
+        self.fc3 = nn.Linear(hparams['hidden_dim_2'], hparams['hidden_dim_3'])
+        self.fc4 = nn.Linear(hparams['hidden_dim_3'], 1)
 
         # Dropout module with 0.2 drop probability
-        self.dropout_input = nn.Dropout(p=0.2)
-        self.dropout_hidden = nn.Dropout(p = 0.5)
+        self.dropout_input = nn.Dropout(p=hparams['dropout_input'])
+        self.dropout_hidden = nn.Dropout(p = hparams['dropout_hidden'])
 
     def forward(self, x):
         if x.ndim != 2:
