@@ -55,10 +55,12 @@ X = encoder_hidden_state[0][:, 0, :].numpy()
 y = df["is_spam"]
 
 X_train, X_val_test, y_train, y_val_test = train_test_split(X,
-                                                            y, test_size = 0.3, stratify=y,
+                                                            y, test_size = 0.3,
+                                                            stratify=y,
                                                             random_state=17)
 X_val, X_test, y_val, y_test = train_test_split(X_val_test,
-                                                y_val_test, test_size = 0.5, stratify=y_val_test,
+                                                y_val_test, test_size = 0.5,
+                                                stratify=y_val_test,
                                                 random_state=17)
 
 pickle.dump(X_train, open("data/processed/X_train.pkl", 'wb'))
