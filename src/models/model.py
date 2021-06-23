@@ -13,7 +13,7 @@ class MyAwesomeModel(nn.Module):
 
         # Dropout module with 0.2 drop probability
         self.dropout_input = nn.Dropout(p=hparams['dropout_input'])
-        self.dropout_hidden = nn.Dropout(p = hparams['dropout_hidden'])
+        self.dropout_hidden = nn.Dropout(p=hparams['dropout_hidden'])
 
     def forward(self, x):
         if x.ndim != 2:

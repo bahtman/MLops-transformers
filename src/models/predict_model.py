@@ -7,7 +7,9 @@ from omegaconf import DictConfig, OmegaConf
 import logging
 
 log = logging.getLogger(__name__)
-@hydra.main(config_path = "../../config", config_name = 'config.yaml')
+
+
+@hydra.main(config_path="../../config", config_name='config.yaml')
 def predict_model(config: DictConfig) -> None:
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment
@@ -25,7 +27,10 @@ def predict_model(config: DictConfig) -> None:
 
     model.eval()
     with torch.no_grad():
-        tp = 0; tn = 0; fp = 0; fn = 0
+        tp = 0
+        tn = 0
+        fp = 0
+        fn = 0
         for texts, labels in testloader:
             ps = model(texts)
             ps = (ps > 0.5).float()
@@ -36,14 +41,14 @@ def predict_model(config: DictConfig) -> None:
             equals = ps == labels.view(*ps.shape)
             for i in range(len(ps)):
                 if ps[i] == 1:
-                    if equals[i] == True:
+                    if equals[i] is True:
                         tp += 1
-                    if equals[i] == False:
+                    if equals[i] is False:
                         fp += 1
                 if ps[i] == 0:
-                    if equals[i] == True:
+                    if equals[i] is True:
                         tn += 1
-                    if equals[i] == False:
+                    if equals[i] is False:
                         fn += 1
             # print("equals = ", equals)
             accuracy = torch.mean(equals.type(torch.FloatTensor))
@@ -61,5 +66,7 @@ def predict_model(config: DictConfig) -> None:
     plt.legend(['Test set accuacy'])
     plt.xlabel('batch_number'), plt.ylabel('Accuacy')
     plt.show()
+
+
 if __name__ == "__main__":
     predict_model()

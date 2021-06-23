@@ -26,6 +26,8 @@ criterion = torch.nn.BCELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
 epochs = 2
 steps = 0
+
+
 @pytest.mark.parametrize("test_input,expected",
                        [("texts", torch.Size([768])),
                         ("output", torch.Size([1]))])
