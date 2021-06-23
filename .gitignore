@@ -4,7 +4,10 @@ __pycache__/
 
 # C extensions
 *.so
+
+
 wandb
+outputs
 
 # Distribution / packaging
 .Python

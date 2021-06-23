@@ -36,21 +36,20 @@ def predict_model(config: DictConfig) -> None:
         for texts, labels in testloader:
             ps = model(texts)
             ps = (ps > 0.5).float()
-            # print("ps = ", ps)
             # top_p, top_class = ps.topk(1, dim=1)
             # print(top_class)
             # print("top_p = ", top_p, "and top class = ", top_class)
             equals = ps == labels.view(*ps.shape)
             for i in range(len(ps)):
-                if ps[i] == 1:
-                    if equals[i] is True:
+                if int(ps[i]) == 1:
+                    if equals[i] == True:
                         tp += 1
-                    if equals[i] is False:
+                    if equals[i] == False:
                         fp += 1
-                if ps[i] == 0:
-                    if equals[i] is True:
+                if int(ps[i]) == 0:
+                    if equals[i] == True:
                         tn += 1
-                    if equals[i] is False:
+                    if equals[i] == False:
                         fn += 1
             # print("equals = ", equals)
             accuracy = torch.mean(equals.type(torch.FloatTensor))
