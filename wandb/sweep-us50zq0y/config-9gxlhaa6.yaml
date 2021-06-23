@@ -1,0 +1,10 @@
+wandb_version: 1
+
+experiment.hidden_dim_1:
+  value: 291
+experiment.hidden_dim_2:
+  value: 188
+experiment.hidden_dim_3:
+  value: 170
+experiment.lr:
+  value: 0.003

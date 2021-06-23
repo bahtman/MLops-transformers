@@ -19,11 +19,9 @@ log = logging.getLogger(__name__)
 def train_model(config: DictConfig) -> None:
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment
-    hyperparameters = dict(epochs = hparams["epochs"])
-    config = wandb.config
     torch.manual_seed(hparams["seed"])
     log.info(f'hparameters:  {hparams}')
-    wandb.init(config=hyperparameters)
+    wandb.init(project="MLOps")
     device = torch.device("cuda" if hparams['cuda'] else "cpu")
     #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     #num_workers = 2
@@ -97,17 +95,17 @@ def train_model(config: DictConfig) -> None:
             lowest_val_loss = running_loss_val/len(valloader)
         else:
             continue      
-        wandb.log({"texts": [wandb.texts(i) for i in texts]})
+        #wandb.log({"texts": [wandb.texts(i) for i in texts]})
         end = time.time()
         res.append(end - start)
     res = np.array(res)
     log.info(f'Timing: {np.mean(res)} +- {np.std(res)}')
-    plt.figure()
-    epoch = np.arange(len(loss_list))
-    plt.plot(epoch, loss_list)
-    plt.plot(epoch, val_loss_list)
-    plt.legend(['Training loss and validation loss'])
-    plt.xlabel('Epochs'), plt.ylabel('Loss')
-    plt.show()
+    #plt.figure()
+    #epoch = np.arange(len(loss_list))
+    #plt.plot(epoch, loss_list)
+    #plt.plot(epoch, val_loss_list)
+    #plt.legend(['Training loss and validation loss'])
+    #plt.xlabel('Epochs'), plt.ylabel('Loss')
+    #plt.show()
 if __name__ == "__main__":
     train_model()

@@ -3,9 +3,9 @@ loss_weight_2: 0.86
 cuda: False
 batch_size: 128
 test_batch_size: 64
-hidden_dim_1: 256
-hidden_dim_2: 128
-hidden_dim_3: 64
+hidden_dim_1: 240
+hidden_dim_2: 254
+hidden_dim_3: 220
 dropout_input: 0.2
 dropout_hidden: 0.5
 lr: 0.003
