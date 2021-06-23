@@ -13,13 +13,15 @@ class MyAwesomeModel(nn.Module):
 
         # Dropout module with 0.2 drop probability
         self.dropout_input = nn.Dropout(p=hparams['dropout_input'])
-        self.dropout_hidden = nn.Dropout(p = hparams['dropout_hidden'])
+        self.dropout_hidden = nn.Dropout(p=hparams['dropout_hidden'])
 
     def forward(self, x):
         if x.ndim != 2:
-            raise ValueError('Expected input to a 2D tensor but instead it is: ', x.ndim)
+            raise ValueError('Expected input to a 2D tensor but instead it is: ',
+                            x.ndim)
         if x.shape[1] != 768:
-            raise ValueError('Expected each sample to have shape [768] but had: ', x.shape )
+            raise ValueError('Expected each sample to have shape [768] but had: ',
+                            x.shape)
         # make sure input tensor is flattened
         x = x.view(x.shape[0], -1)
 
