@@ -1,4 +1,3 @@
-# @package _group_
 train_x_path: '../../../data/processed/X_train.pkl'
 train_y_path: '../../../data/processed/y_train.pkl'
 val_x_path: '../../../data/processed/X_train.pkl'

@@ -18,6 +18,8 @@ pandas = "*"
 scipy = "*"
 sklearn = "*"
 matplotlib = "*"
+hydra-core = "*"
+omegaconf = "*"
 
 [requires]
 python_version = "3.8"

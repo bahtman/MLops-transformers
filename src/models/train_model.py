@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import os
 import torch
-#import wandb
+import wandb
 import time
 from model import MyAwesomeModel
 from torch import optim
@@ -14,14 +14,18 @@ import logging
 
 log = logging.getLogger(__name__)
 @hydra.main(config_path="../../config", config_name='config.yaml')
+
+
 def train_model(config: DictConfig) -> None:
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment
+    hyperparameters = dict(epochs = hparams["epochs"])
+    config = wandb.config
     torch.manual_seed(hparams["seed"])
     log.info(f'hparameters:  {hparams}')
+    wandb.init(config=hyperparameters)
     device = torch.device("cuda" if hparams['cuda'] else "cpu")
     #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    #wandb.init()
     #num_workers = 2
     batch_size = hparams['batch_size']
     X_train = torch.tensor(pd.read_pickle(hparams['train_x_path']))
@@ -44,7 +48,7 @@ def train_model(config: DictConfig) -> None:
     model = model.to(device)
     model = torch.nn.DataParallel(model, device_ids = [0])
 
-    #wandb.watch(model, log_freq=500)
+    wandb.watch(model, log_freq=500)
     criterion = torch.nn.BCELoss(reduction='none')
     #criterion = torch.nn.NLLLoss(torch.tensor([0.8]))
     optimizer = optim.Adam(model.parameters(), lr=hparams['lr'])
@@ -66,7 +70,7 @@ def train_model(config: DictConfig) -> None:
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-            #wandb.log({"train_loss": loss})
+            wandb.log({"train_loss": loss})
         else:
             loss_list.append(running_loss/len(trainloader))
             if e % 20 == 0:
@@ -83,7 +87,7 @@ def train_model(config: DictConfig) -> None:
                 w_val = (0.14*(1-labels)+0.86*labels).detach()
                 loss_val = (w_val*loss_val).mean()
                 running_loss_val += loss_val.item()
-                #wandb.log({"val_loss": loss_val})
+                wandb.log({"val_loss": loss_val})
             else:
                 val_loss_list.append(running_loss_val/len(trainloader))
                 if e % 20 == 0:
@@ -93,7 +97,7 @@ def train_model(config: DictConfig) -> None:
             lowest_val_loss = running_loss_val/len(valloader)
         else:
             continue      
-        #wandb.log({"texts": [wandb.texts(i) for i in texts]})
+        wandb.log({"texts": [wandb.texts(i) for i in texts]})
         end = time.time()
         res.append(end - start)
     res = np.array(res)

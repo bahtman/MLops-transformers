@@ -8,6 +8,8 @@ import logging
 
 log = logging.getLogger(__name__)
 @hydra.main(config_path="../../config", config_name='config.yaml')
+
+
 def predict_model(config: DictConfig) -> None:
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment
