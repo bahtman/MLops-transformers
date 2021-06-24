@@ -91,7 +91,7 @@ def train_model(config: DictConfig) -> None:
                 if e % 20 == 0:
                     log.info(f"at epoch: {e} the Validation loss is : {running_loss_val/len(valloader)}") 
         if (running_loss_val / len(valloader)) < lowest_val_loss:
-            torch.save(model, hparams['model_path'])
+            torch.save(model.state_dict, hparams['model_path'])
             lowest_val_loss = running_loss_val/len(valloader)
         else:
             continue      

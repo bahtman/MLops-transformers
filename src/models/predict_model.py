@@ -68,6 +68,6 @@ def predict_model(config: DictConfig) -> None:
     plt.xlabel('batch_number'), plt.ylabel('Accuacy')
     plt.show()
 
-
+    
 if __name__ == "__main__":
     predict_model()
