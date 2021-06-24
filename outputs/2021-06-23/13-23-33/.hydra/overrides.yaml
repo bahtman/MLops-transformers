@@ -1,0 +1,4 @@
+- experiment.hidden_dim_1=240
+- experiment.hidden_dim_2=254
+- experiment.hidden_dim_3=220
+- experiment.lr=0.003

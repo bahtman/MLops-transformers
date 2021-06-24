@@ -1,0 +1,25 @@
+{
+    "os": "Windows-10-10.0.19041-SP0",
+    "python": "3.8.2",
+    "heartbeatAt": "2021-06-23T11:02:54.758967",
+    "startedAt": "2021-06-23T11:02:52.157756",
+    "docker": null,
+    "gpu": "GeForce GTX 1050 Ti with Max-Q Design",
+    "gpu_count": 1,
+    "cpu_count": 12,
+    "cuda": null,
+    "args": [
+        "experiment.epochs=76"
+    ],
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "https://github.com/bahtman/MLops-transformers.git",
+        "commit": "d2ea048b8a4dd9a594ad3dc3af5c2dfaa9704e21"
+    },
+    "email": "rasmusnissendahl@gmail.com",
+    "root": "C:/Users/Rnd/Documents/MLops-transformers",
+    "host": "DESKTOP-RQ691VP",
+    "username": "Rnd",
+    "executable": "c:\\users\\rnd\\.virtualenvs\\mlops-transformers-2o2mu9cb\\scripts\\python.exe"
+}

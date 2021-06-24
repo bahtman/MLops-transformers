@@ -1,0 +1,21 @@
+experiment:
+  loss_weight_1: 0.14
+  loss_weight_2: 0.86
+  cuda: false
+  batch_size: 128
+  test_batch_size: 64
+  hidden_dim_1: 310
+  hidden_dim_2: 132
+  hidden_dim_3: 27
+  dropout_input: 0.2
+  dropout_hidden: 0.5
+  lr: 0.003
+  epochs: 100
+  seed: 0
+  train_x_path: ../../../data/processed/X_train.pkl
+  train_y_path: ../../../data/processed/y_train.pkl
+  val_x_path: ../../../data/processed/X_train.pkl
+  val_y_path: ../../../data/processed/y_train.pkl
+  test_x_path: ../../../data/processed/X_test.pkl
+  test_y_path: ../../../data/processed/y_test.pkl
+  model_path: ../../../models/model.pth
