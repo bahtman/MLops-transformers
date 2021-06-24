@@ -16,7 +16,9 @@ torch = "*"
 nltk = "*"
 pandas = "*"
 scipy = "*"
-sklearn = "*"
+azureml-core = "*"
+setuptools = "*"
+wheel = "*"
 
 [requires]
 python_version = "3.8"
